@@ -1,22 +1,24 @@
 import React from 'react';
 import ReactDOM, {Root} from 'react-dom/client';
-import './index.css';
+import './index.scss';
 import App from './App';
 import authReducer from './state/auth'
+import navigationReducer from './state/navigation'
 import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from 'react-redux';
 import {
-    persistReducer,
+    persistCombineReducers,
     persistStore
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import {PersistGate} from 'redux-persist/integration/react';
 import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "redux-persist/es/constants";
-
 const persistConfig = {key: 'root', storage, version: 1}
-const persistedReducer = persistReducer(persistConfig, authReducer)
 const store = configureStore({
-    reducer: persistedReducer,
+    reducer: persistCombineReducers(persistConfig, {
+        authState: authReducer,
+        navigationState: navigationReducer
+    }),
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({
             serializableCheck: {

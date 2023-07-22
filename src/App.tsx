@@ -3,25 +3,44 @@ import HomePage from "./scenes/homePage";
 import LoginPage from "./scenes/loginPage";
 import ProfilePage from "./scenes/profilePage";
 import {useSelector} from "react-redux";
-import {Box, createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-import {initialAuthState} from "./state/types/initialAuthState";
+import {Box, createTheme, CssBaseline, ThemeProvider, useMediaQuery} from "@mui/material";
+import {AuthState} from "./state/types/AuthState";
 import themeSettings from "./theme";
 import {useMemo} from "react";
-import LeftBar from "./scenes/sidebar/LeftBar";
-import RightBar from "./scenes/sidebar/RightBar";
+import Sidebar from "./scenes/sidebar";
+import {NavigationState} from "./state/types/NavigationState";
 
 function App() {
-    const mode: string = useSelector((state: initialAuthState) => state.mode)
+    const mode: string = useSelector((authState: AuthState) => authState.mode)
     const theme = useMemo(() => createTheme(themeSettings(mode)), [mode])
+    const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
+    const isMenuRightToggled = useSelector(({navigationState}: {
+        navigationState: NavigationState
+    }) => navigationState.isMenuRightToggled)
+    const isMenuLeftToggled = useSelector(({navigationState}: {
+        navigationState: NavigationState
+    }) => navigationState.isMenuLeftToggled)
+    const contentClasses = useMemo((): string|undefined => {
+        if (isMenuLeftToggled) {
+            return 'menuLeftActive'
+        }
+        if (isMenuRightToggled) {
+            return 'menuRightActive'
+        }
+    }, [isMenuLeftToggled, isMenuRightToggled])
 
     return (
         <div className="app">
             <BrowserRouter>
                 <ThemeProvider theme={theme}>
                     <CssBaseline/>
-                    <LeftBar/>
-                    <RightBar/>
-                    <Box sx={{marginX: '150px', paddingX:2, backgroundColor: '#fff', height: '100%'}}>
+                    <Sidebar/>
+                    <Box sx={{
+                        ...isNonMobileScreen && {marginX: '150px'}, ...{
+                            paddingX: 2,
+                            backgroundColor: '#fff',
+                        }
+                    }} className={contentClasses}>
                         <Routes>
                             <Route path="/" element={<HomePage/>}></Route>
                             <Route path="/login" element={<LoginPage/>}></Route>

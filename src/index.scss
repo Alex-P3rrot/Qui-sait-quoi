@@ -13,9 +13,13 @@ body,
 #root {
   background: linear-gradient(135deg, rgba(60, 211, 173, .5), rgba(76, 184, 196, .5));
 }
-#sideRight {
-  box-shadow: 0 0 10px rgb(76, 192, 196);
+.menuRightActive {
+  transform: translateX(-150px);
+  margin-left: 150px;
+  transition:  .3s;
 }
-#sideLeft {
-  box-shadow: 0 0 10px rgb(60, 211, 193);
+.menuLeftActive {
+  transform: translateX(150px);
+  margin-right: 150px;
+  transition:  .3s;
 }
