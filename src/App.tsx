@@ -9,10 +9,11 @@ import themeSettings from "./theme";
 import {useMemo} from "react";
 import Sidebar from "./scenes/sidebar";
 import {NavigationState} from "./state/types/NavigationState";
+import {frFR} from '@mui/x-date-pickers/locales';
 
 function App() {
     const mode: string = useSelector((authState: AuthState) => authState.mode)
-    const theme = useMemo(() => createTheme(themeSettings(mode)), [mode])
+    const theme = useMemo(() => createTheme(themeSettings(mode), frFR), [mode])
     const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
     const isMenuRightToggled = useSelector(({navigationState}: {
         navigationState: NavigationState
@@ -20,7 +21,7 @@ function App() {
     const isMenuLeftToggled = useSelector(({navigationState}: {
         navigationState: NavigationState
     }) => navigationState.isMenuLeftToggled)
-    const contentClasses = useMemo((): string|undefined => {
+    const contentClasses = useMemo((): string | undefined => {
         if (isMenuLeftToggled) {
             return 'menuLeftActive'
         }
@@ -38,6 +39,7 @@ function App() {
                     <Box sx={{
                         ...isNonMobileScreen && {marginX: '150px'}, ...{
                             paddingX: 2,
+                            paddingTop: 2,
                             backgroundColor: '#fff',
                         }
                     }} className={contentClasses}>

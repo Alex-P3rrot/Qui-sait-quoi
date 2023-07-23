@@ -23,7 +23,7 @@ const RightBar = () => {
             sx={
                 {
                     ...(isNonMobileScreen || isMenuRightToggled
-                        ? {boxShadow: '0 30px 10px rgb(76, 192, 196)', transform: 'translateX(0)'}
+                        ? {boxShadow: '0 0 10px rgb(161 173 170)', transform: 'translateX(0)'}
                         : {transform: 'translateX(150px)'}),
                     ...styles.container
                 }

@@ -5,5 +5,8 @@ export type User = {
     email: string,
     username: string,
     password: string,
-    posts: Array<Post>
+    picture: string|null,
+    birthDate: Date|null,
+    location: string|null,
+    posts: Array<Post|null>
 }
