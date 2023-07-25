@@ -1,4 +1,4 @@
-import React from 'react';
+import {StrictMode} from 'react';
 import ReactDOM, {Root} from 'react-dom/client';
 import './index.scss';
 import App from './App';
@@ -32,11 +32,11 @@ const root: Root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
-    <React.StrictMode>
+    <StrictMode>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistStore(store)}>
                 <App/>
             </PersistGate>
         </Provider>
-    </React.StrictMode>
+    </StrictMode>
 );

@@ -1,4 +1,3 @@
-import FlexBox from "../../components/FlexBox";
 import {Box, Typography, useMediaQuery} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {NavigationState} from "../../state/types/NavigationState";
@@ -17,28 +16,28 @@ const RightBar = () => {
     useOutsideEvent(element, () => dispatch(setIsMenuRightToggled(false)))
 
     return (
-        <FlexBox
-            ref={element}
-            id="sideRight"
-            sx={
-                {
-                    ...(isNonMobileScreen || isMenuRightToggled
-                        ? {boxShadow: '0 0 10px rgb(161 173 170)', transform: 'translateX(0)'}
-                        : {transform: 'translateX(150px)'}),
-                    ...styles.container
-                }
-            }>
+        <Box component="aside"
+             ref={element}
+             id="sideRight"
+             sx={
+                 {
+                     ...(isNonMobileScreen || isMenuRightToggled
+                         ? {boxShadow: '0 0 10px rgb(161 173 170)', transform: 'translateX(0)'}
+                         : {transform: 'translateX(180px)'}),
+                     ...styles.container
+                 }
+             }>
             <Box width="100%">
                 <Typography>Rightbar</Typography>
             </Box>
-        </FlexBox>
+        </Box>
     )
 };
 
 const styles = {
     container: {
         position: 'fixed',
-        width: '150px',
+        width: '180px',
         height: '100%',
         right: 0,
         justifyContent: 'right',

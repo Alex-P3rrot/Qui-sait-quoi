@@ -7,9 +7,10 @@ import {Box, createTheme, CssBaseline, ThemeProvider, useMediaQuery} from "@mui/
 import {AuthState} from "./state/types/AuthState";
 import themeSettings from "./theme";
 import {useMemo} from "react";
-import Sidebar from "./scenes/sidebar";
+import TopBar from "./scenes/navbar";
 import {NavigationState} from "./state/types/NavigationState";
 import {frFR} from '@mui/x-date-pickers/locales';
+import CategoryPage from "./scenes/categoryPage";
 
 function App() {
     const mode: string = useSelector((authState: AuthState) => authState.mode)
@@ -35,18 +36,13 @@ function App() {
             <BrowserRouter>
                 <ThemeProvider theme={theme}>
                     <CssBaseline/>
-                    <Sidebar/>
-                    <Box sx={{
-                        ...isNonMobileScreen && {marginX: '150px'}, ...{
-                            paddingX: 2,
-                            paddingTop: 2,
-                            backgroundColor: '#fff',
-                        }
-                    }} className={contentClasses}>
+                    <TopBar/>
+                    <Box id="content" sx={{...isNonMobileScreen && {paddingX: '180px'}}} className={contentClasses}>
                         <Routes>
                             <Route path="/" element={<HomePage/>}></Route>
                             <Route path="/login" element={<LoginPage/>}></Route>
                             <Route path="/profile" element={<ProfilePage/>}></Route>
+                            <Route path="/category/:category" element={<CategoryPage/>}></Route>
                         </Routes>
                     </Box>
                 </ThemeProvider>

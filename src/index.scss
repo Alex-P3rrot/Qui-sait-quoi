@@ -5,21 +5,52 @@ body,
 #root,
 .app {
   height: 100%;
-  width: 100%;
   font-size: .9rem;
   font-family: 'Rubik', sans-serif;
 }
 
-#root {
-  background: linear-gradient(135deg, rgba(60 211 173 / 0.5), rgba(161 173 170 / .5), rgba(76 184 196 /0.5));
+#content {
+  background-size: 400% 400%;
+  background: linear-gradient(135deg, rgba(60 211 173 / .3), rgba(161 173 170 / .5), rgba(99, 164, 173, 0.3), rgba(120, 166, 128, 0.42), rgba(161 173 170 / .3), rgba(76 184 196 /.3));
+  animation: gradient 30s infinite;
+  min-height: 100%;
+
+  & > * {
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #fff;
+  }
 }
+
 .menuRightActive {
-  transform: translateX(-150px);
-  margin-left: 150px;
+  transform: translateX(-180px);
+  margin-left: 180px;
   transition:  .3s;
 }
 .menuLeftActive {
-  transform: translateX(150px);
-  margin-right: 150px;
+  transform: translateX(180px);
+  margin-right: 180px;
   transition:  .3s;
+}
+
+#sideLeft {
+  p {
+    font-weight: 700;
+  }
+
+  ul div:hover {
+    color: #000;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

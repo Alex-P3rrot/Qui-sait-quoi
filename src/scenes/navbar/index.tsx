@@ -2,7 +2,6 @@ import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Box, IconButton, Typography, useMediaQuery} from "@mui/material";
-import {useTheme} from "@mui/joy";
 import {AuthState} from "../../state/types/AuthState";
 import FlexBox from "../../components/FlexBox";
 import LeftBar from "./LeftBar";
@@ -11,7 +10,7 @@ import {ViewList, ViewSidebar} from "@mui/icons-material";
 import {NavigationState} from "../../state/types/NavigationState";
 import {setIsMenuLeftToggled, setIsMenuRightToggled} from "../../state/navigation";
 
-const Sidebar = () => {
+const NavBar = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = useSelector(({authState}: { authState: AuthState }) => authState.user)
@@ -22,7 +21,6 @@ const Sidebar = () => {
         navigationState: NavigationState
     }) => navigationState.isMenuRightToggled)
     const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
-    const theme = useTheme()
 
     useEffect(() => {
         (() => {
@@ -58,4 +56,4 @@ const Sidebar = () => {
     )
 };
 
-export default Sidebar;
+export default NavBar;
