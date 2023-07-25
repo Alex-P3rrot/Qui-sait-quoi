@@ -7,6 +7,7 @@ import FlexBox from "../../components/FlexBox";
 import {formValuesInterface} from "./formValuesInterface";
 import {DatePicker} from "@mui/x-date-pickers";
 import moment from "moment/moment";
+import {MutableRefObject, useRef, useState} from "react";
 
 interface OtherProps {
     pageType: string,
@@ -36,6 +37,7 @@ async function register(values: FormikValues) {
 }
 
 const FormContent = (props: OtherProps & FormikProps<formValuesInterface>) => {
+    let preview: MutableRefObject<string> = useRef('')
     const {
         pageType,
         isNonMobileScreen,
@@ -49,7 +51,6 @@ const FormContent = (props: OtherProps & FormikProps<formValuesInterface>) => {
         isSubmitting
     } = props
 
-    console.log(values)
     return (
         <Form>
             <Box
@@ -80,32 +81,52 @@ const FormContent = (props: OtherProps & FormikProps<formValuesInterface>) => {
                             helperText={touched.location && errors.location}
                             sx={{gridColumn: "span 2"}}/>
                         <DatePicker
+                            disableFuture
                             label="Birthdate"
+                            sx={{gridColumn: "span 2"}}
                             onChange={async (value: string | null): Promise<void | FormikErrors<any>> => {
-                                if (value) await setFieldValue("birthdate", moment(value))
+                                if (value) {
+                                    await setFieldValue("birthdate", moment(value))
+                                } else {
+                                    await setFieldValue("birthdate", null)
+                                }
                             }}
-                            sx={{gridColumn: "span 2"}}/>
-                        <Box gridColumn="span 4" borderRadius="5px" p="1rem">
+                            slotProps={{
+                                textField: {
+                                    onBlur: handleBlur,
+                                    value: values.birthdate,
+                                    error: (Boolean(touched.birthdate) && Boolean(errors.birthdate)),
+                                    helperText: (touched.birthdate && errors.birthdate),
+                                },
+                            }}/>
+                        <Box gridColumn="span 1" borderRadius="5px" p="1rem">
                             <Dropzone
                                 multiple={false}
                                 onDrop={async (acceptedFiles) => {
+                                    preview.current = URL.createObjectURL(acceptedFiles[0])
                                     await setFieldValue("picture", acceptedFiles[0])
                                 }}>
                                 {({getRootProps, getInputProps}) => (
-                                    <Box {...getRootProps()} p="1rem" sx={{"&:hover": {cursor: "pointer"}}}>
+                                    <Box {...getRootProps()} p="1rem"
+                                         sx={{border: '1px dashed', "&:hover": {cursor: "pointer"}}}>
                                         <input {...getInputProps()} />
                                         {!values.picture
-                                            ? (<p>Add Picture Here</p>)
+                                            ? (<Typography>Add Picture Here</Typography>)
                                             : (
-                                                <FlexBox>
-                                                    <Typography>{values.picture.name}</Typography>
-                                                    <EditOutlinedIcon/>
+                                                <FlexBox flexDirection="column">
+                                                    <Box component="img" src={preview.current} height={150} width={150}
+                                                         marginBottom={2}/>
+                                                    <FlexBox justifyContent="space-between" pr={2}>
+                                                        <Typography>{values.picture.name}</Typography>
+                                                        <EditOutlinedIcon/>
+                                                    </FlexBox>
                                                 </FlexBox>
                                             )}
                                     </Box>
                                 )}
                             </Dropzone>
                         </Box>
+                        <Box gridColumn="span 3"></Box>
                     </>
                 )}
                 <TextField
@@ -133,12 +154,12 @@ const FormContent = (props: OtherProps & FormikProps<formValuesInterface>) => {
                 {/*</Box>*/}
 
                 {/*/!* BUTTONS *!/*/}
-                <Box>
+                <Box sx={{gridColumn: "2/4"}}>
                     <Button
                         fullWidth
                         disabled={isSubmitting}
                         type="submit"
-                        sx={{m: "2rem 0", p: "1rem"}}>
+                        sx={{m: "2rem 0", p: "1rem", border: '1px solid'}}>
                         {pageType === "login" ? "LOGIN" : "REGISTER"}
                     </Button>
                     <Typography
@@ -147,6 +168,7 @@ const FormContent = (props: OtherProps & FormikProps<formValuesInterface>) => {
                         }}
                         sx={{
                             textDecoration: "underline",
+                            paddingBottom: 1,
                             "&:hover": {
                                 cursor: "pointer",
                             },
@@ -167,7 +189,7 @@ export const AuthForm = withFormik<OtherProps, formValuesInterface>({
             username: '',
             password: '',
             email: '',
-            birthdate: moment(),
+            birthdate: null,
             picture: null,
             location: ''
         }
