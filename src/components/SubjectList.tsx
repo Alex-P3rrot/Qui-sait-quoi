@@ -1,16 +1,20 @@
 import {List, ListItemButton, Typography} from "@mui/material";
 import {Subject} from "../models/Subject";
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
+import {useNavigate} from "react-router-dom";
 
-function SubjectList(props: { subjects: Array<Subject> }) {
-    const {subjects} = props
+function SubjectList(props: { category: string, subjects: Array<Subject> }) {
+    const navigate = useNavigate()
+    const {category, subjects} = props
     return (
         <List sx={{width: '100%'}}>
             {subjects.length > 0 ?
-                subjects.map(subject => (
-                    <ListItemButton sx={styles.listItemBtn}>
+                subjects.map((subject, index) => (
+                    <ListItemButton key={index}
+                        onClick={() => navigate(`/category/${category}/subject/${subject.id}`, {replace: true})}
+                        sx={styles.listItemBtn}>
                         <Typography>{subject.title}</Typography>
-                        <Typography sx={{display:'flex'}}><TextsmsOutlinedIcon />&nbsp;{subject.comments}</Typography>
+                        <Typography sx={{display: 'flex'}}><TextsmsOutlinedIcon/>&nbsp;{subject.comments}</Typography>
                     </ListItemButton>
                 ))
                 : null

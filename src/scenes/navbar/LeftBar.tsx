@@ -20,6 +20,7 @@ import {useNavigate} from "react-router-dom";
 import WindowIcon from '@mui/icons-material/Window';
 import PlaceIcon from '@mui/icons-material/Place';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import HailOutlinedIcon from '@mui/icons-material/HailOutlined';
 
 const LeftBar = () => {
     const navigate = useNavigate()
@@ -77,6 +78,10 @@ const LeftBar = () => {
                     <ListItemButton onClick={() => navigate('/category/donation')}>
                         <VolunteerActivismIcon/>&nbsp;
                         <Typography>Dons</Typography>
+                    </ListItemButton>
+                    <ListItemButton onClick={() => navigate('/category/found')}>
+                        <HailOutlinedIcon/>&nbsp;
+                        <Typography>Objets trouvé</Typography>
                     </ListItemButton>
                 </List>
             </Box>

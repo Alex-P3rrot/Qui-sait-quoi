@@ -11,6 +11,7 @@ import TopBar from "./scenes/navbar";
 import {NavigationState} from "./state/types/NavigationState";
 import {frFR} from '@mui/x-date-pickers/locales';
 import CategoryPage from "./scenes/categoryPage";
+import SubjectPage from "./scenes/subjectPage";
 
 function App() {
     const mode: string = useSelector((authState: AuthState) => authState.mode)
@@ -43,6 +44,7 @@ function App() {
                             <Route path="/login" element={<LoginPage/>}></Route>
                             <Route path="/profile" element={<ProfilePage/>}></Route>
                             <Route path="/category/:category" element={<CategoryPage/>}></Route>
+                            <Route path="/category/:category/subject/:subjectId" element={<SubjectPage/>}></Route>
                         </Routes>
                     </Box>
                 </ThemeProvider>
