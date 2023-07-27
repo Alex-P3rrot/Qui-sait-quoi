@@ -4,6 +4,7 @@ import './index.scss';
 import App from './App';
 import authReducer from './state/auth'
 import navigationReducer from './state/navigation'
+import subjectReducer from './state/subject'
 import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from 'react-redux';
 import {
@@ -13,11 +14,13 @@ import {
 import storage from 'redux-persist/lib/storage';
 import {PersistGate} from 'redux-persist/integration/react';
 import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "redux-persist/es/constants";
+
 const persistConfig = {key: 'root', storage, version: 1}
 const store = configureStore({
     reducer: persistCombineReducers(persistConfig, {
         authState: authReducer,
-        navigationState: navigationReducer
+        navigationState: navigationReducer,
+        subjectState: subjectReducer
     }),
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({

@@ -1,15 +1,24 @@
 import {List, ListItemButton, Typography} from "@mui/material";
-import {Subject} from "../models/Subject";
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setList} from "../state/subject";
+import {useEffect} from "react";
+import {SubjectState} from "../state/types/SubjectState";
 
-function SubjectList(props: { category: string, subjects: Array<Subject> }) {
+function SubjectList(props: { category: string }) {
     const navigate = useNavigate()
-    const {category, subjects} = props
+    const {category} = props
+    const dispatch = useDispatch()
+    useEffect(() => {
+        (() => dispatch(setList({category})))()
+    }, [category])
+    const subjects = useSelector(({subjectState}: {subjectState: SubjectState}) => subjectState.selectedList)
+
     return (
         <List sx={{width: '100%'}}>
-            {subjects.length > 0 ?
-                subjects.map((subject, index) => (
+            {Array.isArray(subjects) && subjects.length > 0
+                ? subjects.map((subject, index) => (
                     <ListItemButton key={index}
                         onClick={() => navigate(`/category/${category}/subject/${subject.id}`, {replace: true})}
                         sx={styles.listItemBtn}>
@@ -17,7 +26,7 @@ function SubjectList(props: { category: string, subjects: Array<Subject> }) {
                         <Typography sx={{display: 'flex'}}><TextsmsOutlinedIcon/>&nbsp;{subject.comments}</Typography>
                     </ListItemButton>
                 ))
-                : null
+                : <Typography>Aucun sujet n'a été créé</Typography>
             }
         </List>
     )

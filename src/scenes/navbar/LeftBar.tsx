@@ -31,7 +31,6 @@ const LeftBar = () => {
     }) => navigationState.isMenuLeftToggled)
     const element: MutableRefObject<HTMLElement | undefined> = useRef()
     const dispatch = useDispatch()
-
     useOutsideEvent(element, () => dispatch(setIsMenuLeftToggled(false)))
 
     return (
