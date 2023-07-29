@@ -5,10 +5,17 @@ import {useState} from "react";
 import {Box, Button, Slide, Typography} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {SubjectForm} from "./SubjectForm";
+import {useDispatch} from "react-redux";
+import {addSubject} from "../../state/subject";
 
 function CategoryPage() {
     const {category} = useParams() as { category: string }
     const [slideIn, setSlideIn] = useState(false)
+    const dispatch = useDispatch()
+    const onSubmit = (values: {title: string}) => {
+        dispatch(addSubject({subject: values, category: category}))
+        setSlideIn(false)
+    }
 
     return (
         <Box>
@@ -18,10 +25,10 @@ function CategoryPage() {
                     Créer un nouveau sujet
                 </Button>
             </FlexBox>
-            <SubjectList category={category}/>
+            {!slideIn && (<SubjectList category={category}/>)}
             <Slide direction="up" in={slideIn} mountOnEnter unmountOnExit>
                 <Box width="100%">
-                    <SubjectForm setSlideIn={setSlideIn}/>
+                    <SubjectForm setSlideIn={setSlideIn} category={category} onSubmit={onSubmit}/>
                 </Box>
             </Slide>
         </Box>

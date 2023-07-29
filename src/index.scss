@@ -9,6 +9,11 @@ body,
   font-family: 'Rubik', sans-serif;
 }
 
+.bg-gradient {
+  background: linear-gradient(135deg, rgba(60 211 173 / .3), rgba(161 173 170 / .5), rgba(99, 164, 173, 0.3), rgba(120, 166, 128, 0.42), rgba(161 173 170 / .3), rgba(76 184 196 /.3));
+  animation: gradient 30s infinite;
+}
+
 #content {
   background-size: 400% 400%;
   background: linear-gradient(135deg, rgba(60 211 173 / .3), rgba(161 173 170 / .5), rgba(99, 164, 173, 0.3), rgba(120, 166, 128, 0.42), rgba(161 173 170 / .3), rgba(76 184 196 /.3));

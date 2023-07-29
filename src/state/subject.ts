@@ -216,7 +216,7 @@ export const subjectSlice: Slice = createSlice({
             if (state.hasOwnProperty(category)) {
                 const group = state[category]
                 if (group !== null && Array.isArray(group)) {
-                    group.unshift(action.payload.subject)
+                    group.unshift({id: group.length, ...action.payload.subject})
                 }
             }
         },

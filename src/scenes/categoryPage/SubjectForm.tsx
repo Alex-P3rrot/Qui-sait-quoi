@@ -2,13 +2,14 @@ import {Form, FormikBag, FormikProps, withFormik} from "formik";
 import {object, string} from "yup";
 import {Button, TextField} from "@mui/material";
 
-const FormContent = (props: FormikProps<{ title: string }>) => {
+const FormContent = (props: OtherProps & FormikProps<{ title: string }>) => {
     const {
         handleBlur,
         handleChange,
         values,
         touched,
-        errors
+        errors,
+        setSlideIn
     } = props
 
     return (
@@ -22,13 +23,16 @@ const FormContent = (props: FormikProps<{ title: string }>) => {
                 error={Boolean(touched.title) && Boolean(errors.title)}
                 helperText={touched.title && errors.title}
                 sx={{width: '100%'}}/>
-            <Button variant="outlined" type="submit" sx={{mt: 4}}>Enregistrer</Button>
+                <Button variant="outlined" onClick={() => setSlideIn(false)} sx={{mt: 4}}>Annuler</Button>
+                <Button variant="outlined" type="submit" sx={{mt: 4, float:'right'}}>Enregistrer</Button>
         </Form>
     )
 }
 
 type OtherProps = {
-    setSlideIn: Function
+    setSlideIn: Function,
+    category: string,
+    onSubmit: Function
 }
 
 export const SubjectForm = withFormik<OtherProps, { title: string }>({
@@ -42,7 +46,7 @@ export const SubjectForm = withFormik<OtherProps, { title: string }>({
             title: string().min(10).required()
         })
     },
-    handleSubmit: (values, formikBag: FormikBag<OtherProps, { title: string }>) => {
-        formikBag.props.setSlideIn(false)
+    handleSubmit: async (values, formikBag: FormikBag<OtherProps, { title: string }>) => {
+        formikBag.props.onSubmit(values)
     }
 })(FormContent)

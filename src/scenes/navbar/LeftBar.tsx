@@ -35,6 +35,7 @@ const LeftBar = () => {
 
     return (
         <Box component="aside"
+             className={!isNonMobileScreen ? 'bg-gradient' : ''}
              ref={element}
              id="sideLeft"
              sx={

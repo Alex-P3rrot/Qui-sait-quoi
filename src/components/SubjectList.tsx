@@ -1,4 +1,4 @@
-import {List, ListItemButton, Typography} from "@mui/material";
+import {List, ListItemButton, Typography, useMediaQuery} from "@mui/material";
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,6 +14,16 @@ function SubjectList(props: { category: string }) {
         (() => dispatch(setList({category})))()
     }, [category])
     const subjects = useSelector(({subjectState}: {subjectState: SubjectState}) => subjectState.selectedList)
+    const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
+    const styles = {
+        listItemBtn: {
+            marginY: 2,
+            marginX: isNonMobileScreen ? 10 : 0,
+            border: '1px solid rgba(0 0 0 / .1)',
+            display: 'flex',
+            justifyContent: 'space-between'
+        }
+    }
 
     return (
         <List sx={{width: '100%'}}>
@@ -30,16 +40,6 @@ function SubjectList(props: { category: string }) {
             }
         </List>
     )
-}
-
-const styles = {
-    listItemBtn: {
-        marginY: 2,
-        marginX: 10,
-        border: '1px solid rgba(0 0 0 / .1)',
-        display: 'flex',
-        justifyContent: 'space-between'
-    }
 }
 
 export default SubjectList
