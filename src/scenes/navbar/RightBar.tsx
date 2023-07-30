@@ -1,29 +1,33 @@
 import {Box, List, ListItemButton, Slide, Typography, useMediaQuery} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {NavigationState} from "../../state/types/NavigationState";
-import {useOutsideEvent} from "../../hooks/outsideEvent";
-import {setIsMenuRightToggled} from "../../state/navigation";
 import {MutableRefObject, useEffect, useRef, useState} from "react";
-import {matchPath, useNavigate} from "react-router-dom";
-import {SubjectState} from "../../state/types/SubjectState";
+import {matchPath, PathMatch, useNavigate} from "react-router-dom";
+import {useSubjectState} from "../../state/subject";
+import {Subject} from "../../models/Subject";
+import {useNavbarState} from "../../state/navbar";
+import {useOutsideEvent} from "../../hooks/outsideEvent";
+
+type matchedPathType = PathMatch<"category" | "subjectId"> | null
 
 const RightBar = () => {
+    const subjectStore = useSubjectState()
+    const navbarState = useNavbarState()
     const navigate = useNavigate()
     const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
-    const isMenuRightToggled = useSelector(({navigationState}: {
-        navigationState: NavigationState
-    }) => navigationState.isMenuRightToggled)
+    const isMenuRightToggled = navbarState.isMenuRightToggled
     const element: MutableRefObject<HTMLElement | undefined> = useRef()
-    const dispatch = useDispatch()
-    useOutsideEvent(element, () => dispatch(setIsMenuRightToggled(false)))
-    const matchedPath = matchPath({path: '/category/:category/subject/:subjectId'}, window.location.pathname)
+    useOutsideEvent(element, () => navbarState.setIsMenuRightToggled(false))
+    const matchedPath = matchPath({path: '/category/:category/subject/:subjectId'}, window.location.pathname) as matchedPathType
     const [category, setCategory] = useState<string | undefined>()
     const [slideIn, setSlideIn] = useState<boolean>(false)
-    const otherSubjects = useSelector(({subjectState}: {subjectState: SubjectState}) => subjectState.selectedList)
+    const otherSubjects = useRef<Subject[] | undefined>()
 
     useEffect(() => {
         (() => {
-            if (matchedPath) setCategory(matchedPath.params.category)
+            if (matchedPath) {
+                const category = matchedPath.params.category as string
+                setCategory(category)
+                otherSubjects.current = subjectStore.cachedSubject[category]
+            }
             setSlideIn(matchedPath != null && Object.keys(matchedPath.params).includes('subjectId'))
         })()
     }, [matchedPath])
@@ -46,8 +50,8 @@ const RightBar = () => {
                     <Box>
                         <Typography variant="h6" sx={{textAlign: 'center'}}>Autres sujets</Typography>
                         <List>
-                            {otherSubjects && (
-                                otherSubjects.map((subject, index) => (
+                            {otherSubjects.current && (
+                                otherSubjects.current.map((subject, index) => (
                                     <ListItemButton key={index}
                                                     onClick={() => navigate(`/category/${category}/subject/${subject.id}`)}>
                                         {subject.title}

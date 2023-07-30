@@ -7,12 +7,8 @@ import {
     Typography,
     useMediaQuery
 } from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {NavigationState} from "../../state/types/NavigationState";
 import {useOutsideEvent} from "../../hooks/outsideEvent";
-import {setIsMenuLeftToggled} from "../../state/navigation";
 import {MutableRefObject, useRef} from "react";
-import {AuthState} from "../../state/types/AuthState";
 import {User} from "../../models/User";
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import LoginIcon from '@mui/icons-material/Login';
@@ -21,17 +17,16 @@ import WindowIcon from '@mui/icons-material/Window';
 import PlaceIcon from '@mui/icons-material/Place';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import HailOutlinedIcon from '@mui/icons-material/HailOutlined';
+import {useNavbarState} from "../../state/navbar";
 
 const LeftBar = () => {
+    const navbarState = useNavbarState()
     const navigate = useNavigate()
-    const user: User | null = useSelector(({authState}: { authState: AuthState }) => authState.user)
+    const user: User | null = null
     const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
-    const isMenuLeftToggled = useSelector(({navigationState}: {
-        navigationState: NavigationState
-    }) => navigationState.isMenuLeftToggled)
+    const isMenuLeftToggled = navbarState.isMenuLeftToggled
     const element: MutableRefObject<HTMLElement | undefined> = useRef()
-    const dispatch = useDispatch()
-    useOutsideEvent(element, () => dispatch(setIsMenuLeftToggled(false)))
+    useOutsideEvent(element, () => navbarState.setIsMenuLeftToggled(false))
 
     return (
         <Box component="aside"
@@ -53,18 +48,18 @@ const LeftBar = () => {
                         <Typography>Home</Typography>
                     </ListItemButton>
                     <Divider sx={{marginY: 2}}/>
-                    {user
-                        ? (
-                            <Avatar alt={user.username}
-                                    src={user.picture ? user.picture : 'https://xsgames.co/randomusers/avatar.php?g=female'}/>
-                        )
-                        : (
-                            <ListItemButton onClick={() => navigate('/login')}>
-                                <LoginIcon/>&nbsp;
-                                <Typography>Login</Typography>
-                            </ListItemButton>
-                        )
-                    }
+                    {/*{user*/}
+                    {/*    ? (*/}
+                    {/*        <Avatar alt={user.username}*/}
+                    {/*                src={user.picture ? user.picture : 'https://xsgames.co/randomusers/avatar.php?g=female'}/>*/}
+                    {/*    )*/}
+                    {/*    : (*/}
+                    {/*        <ListItemButton onClick={() => navigate('/login')}>*/}
+                    {/*            <LoginIcon/>&nbsp;*/}
+                    {/*            <Typography>Login</Typography>*/}
+                    {/*        </ListItemButton>*/}
+                    {/*    )*/}
+                    {/*}*/}
                     <Divider sx={{marginY: 2}}/>
                     <Typography sx={{mb: 2, ml: 2, textDecoration: 'underline'}}>Categories</Typography>
                     <ListItemButton onClick={() => navigate('/category/knowledge')}>

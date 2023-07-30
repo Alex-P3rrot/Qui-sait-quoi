@@ -1,31 +1,23 @@
 import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Box, IconButton, Typography, useMediaQuery} from "@mui/material";
-import {AuthState} from "../../state/types/AuthState";
 import FlexBox from "../../components/FlexBox";
 import LeftBar from "./LeftBar";
 import RightBar from "./RightBar";
 import {ViewList, ViewSidebar} from "@mui/icons-material";
-import {NavigationState} from "../../state/types/NavigationState";
-import {setIsMenuLeftToggled, setIsMenuRightToggled} from "../../state/navigation";
+import {useNavbarState} from "../../state/navbar";
 
 const NavBar = () => {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-    const user = useSelector(({authState}: { authState: AuthState }) => authState.user)
-    const isMenuLeftToggled = useSelector(({navigationState}: {
-        navigationState: NavigationState
-    }) => navigationState.isMenuLeftToggled)
-    const isMenuRightToggled = useSelector(({navigationState}: {
-        navigationState: NavigationState
-    }) => navigationState.isMenuRightToggled)
+    const navbarState = useNavbarState()
+    const isMenuLeftToggled = navbarState.isMenuLeftToggled
+    const isMenuRightToggled = navbarState.isMenuRightToggled
     const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
 
     useEffect(() => {
         (() => {
-            dispatch(setIsMenuLeftToggled(false))
-            dispatch(setIsMenuRightToggled(false))
+            navbarState.setIsMenuLeftToggled(false)
+            navbarState.setIsMenuRightToggled(false)
         })()
     }, [isNonMobileScreen])
 
@@ -34,7 +26,7 @@ const NavBar = () => {
             {!isNonMobileScreen && (
                 <FlexBox width="100%" height={40} justifyContent="space-between" alignItems="center">
                     <Box visibility={isMenuLeftToggled ? 'hidden' : 'visible'}>
-                        <IconButton onClick={() => dispatch(setIsMenuLeftToggled(!isMenuLeftToggled))}>
+                        <IconButton onClick={() => navbarState.setIsMenuLeftToggled(true)}>
                             <ViewList/>
                         </IconButton>
                     </Box>
@@ -44,7 +36,7 @@ const NavBar = () => {
                         },
                     }}>Home</Typography>
                     <Box visibility={isMenuRightToggled ? 'hidden' : 'visible'}>
-                        <IconButton onClick={() => dispatch(setIsMenuRightToggled(!isMenuRightToggled))}>
+                        <IconButton onClick={() => navbarState.setIsMenuRightToggled(true)}>
                             <ViewSidebar/>
                         </IconButton>
                     </Box>

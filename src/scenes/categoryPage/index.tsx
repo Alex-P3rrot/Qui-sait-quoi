@@ -5,15 +5,15 @@ import {useState} from "react";
 import {Box, Button, Slide, Typography} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {SubjectForm} from "./SubjectForm";
-import {useDispatch} from "react-redux";
-import {addSubject} from "../../state/subject";
+import {useSubjectState} from "../../state/subject";
 
 function CategoryPage() {
     const {category} = useParams() as { category: string }
     const [slideIn, setSlideIn] = useState(false)
-    const dispatch = useDispatch()
+    const subjectState = useSubjectState()
     const onSubmit = (values: {title: string}) => {
-        dispatch(addSubject({subject: values, category: category}))
+        const nextId = subjectState.cachedSubject.hasOwnProperty(category) ? subjectState.cachedSubject[category].length : 0
+        subjectState.addCachedSubject(category, {id: nextId, comments: 0, ...values})
         setSlideIn(false)
     }
 
