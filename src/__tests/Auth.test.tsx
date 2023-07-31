@@ -13,9 +13,11 @@ function FormTestComponent(props: any) {
             if (props.hasOwnProperty('pageType')) setPageType(props.pageType)
         })()
     }, [])
+    const login = () => {}
+    const register = () => {}
     return (
         <LocalizationProvider dateAdapter={AdapterMoment}>
-            <AuthForm pageType={pageType} setPageType={setPageType} isNonMobileScreen={true}/>
+            <AuthForm pageType={pageType} setPageType={setPageType} isNonMobileScreen={true} login={login} register={register}/>
         </LocalizationProvider>
     )
 }

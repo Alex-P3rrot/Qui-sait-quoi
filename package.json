@@ -9,9 +9,6 @@
     "@mui/joy": "^5.0.0-alpha.88",
     "@mui/material": "^5.14.1",
     "@mui/x-date-pickers": "^6.10.1",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.38",
     "@types/react": "^18.2.15",
@@ -56,6 +53,10 @@
     ]
   },
   "devDependencies": {
-    "@types/react-test-renderer": "^18.0.0"
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/react-test-renderer": "^18.0.0",
+    "jsdom": "^22.1.0"
   }
 }

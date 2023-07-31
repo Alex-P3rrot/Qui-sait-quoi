@@ -7,12 +7,14 @@ import FlexBox from "../../components/FlexBox";
 import {formValuesInterface} from "./formValuesInterface";
 import {DatePicker} from "@mui/x-date-pickers";
 import moment from "moment/moment";
-import {MutableRefObject, useRef, useState} from "react";
+import {MutableRefObject, useRef} from "react";
 
 interface OtherProps {
     pageType: string,
     setPageType: Function,
     isNonMobileScreen: boolean,
+    login: Function,
+    register: Function
 }
 
 let loginSchema = object({
@@ -28,16 +30,9 @@ let registerSchema = object({
     location: string().nullable()
 })
 
-async function login(values: FormikValues) {
-    console.log(values)
-}
-
-async function register(values: FormikValues) {
-    console.log(values)
-}
-
 const FormContent = (props: OtherProps & FormikProps<formValuesInterface>) => {
     let preview: MutableRefObject<string> = useRef('')
+
     const {
         pageType,
         isNonMobileScreen,
@@ -198,7 +193,7 @@ export const AuthForm = withFormik<OtherProps, formValuesInterface>({
         return props.pageType === 'login' ? loginSchema : registerSchema
     },
     handleSubmit: async (values, bag: FormikBag<OtherProps, formValuesInterface>) => {
-        if (bag.props.pageType === 'login') await login(values)
-        if (bag.props.pageType === 'register') await register(values)
+        if (bag.props.pageType === 'login') await bag.props.login(values)
+        if (bag.props.pageType === 'register') await bag.props.register(values)
     }
 })(FormContent)

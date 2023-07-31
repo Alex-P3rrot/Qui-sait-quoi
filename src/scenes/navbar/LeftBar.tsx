@@ -1,6 +1,6 @@
 import {
     Avatar,
-    Box,
+    Box, Collapse,
     Divider,
     List,
     ListItemButton,
@@ -8,7 +8,7 @@ import {
     useMediaQuery
 } from "@mui/material";
 import {useOutsideEvent} from "../../hooks/outsideEvent";
-import {MutableRefObject, useRef} from "react";
+import {MutableRefObject, useRef, useState} from "react";
 import {User} from "../../models/User";
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import LoginIcon from '@mui/icons-material/Login';
@@ -18,14 +18,19 @@ import PlaceIcon from '@mui/icons-material/Place';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import HailOutlinedIcon from '@mui/icons-material/HailOutlined';
 import {useNavbarState} from "../../state/navbar";
+import {useAuthState} from "../../state/auth";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const LeftBar = () => {
     const navbarState = useNavbarState()
     const navigate = useNavigate()
-    const user: User | null = null
+    const authState = useAuthState()
+    const isUserLoggedIn: boolean = authState.isUserLoggedIn
+    const user: User | null = authState.user
     const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
     const isMenuLeftToggled = navbarState.isMenuLeftToggled
     const element: MutableRefObject<HTMLElement | undefined> = useRef()
+    const [open, setOpen] = useState(false)
     useOutsideEvent(element, () => navbarState.setIsMenuLeftToggled(false))
 
     return (
@@ -48,18 +53,30 @@ const LeftBar = () => {
                         <Typography>Home</Typography>
                     </ListItemButton>
                     <Divider sx={{marginY: 2}}/>
-                    {/*{user*/}
-                    {/*    ? (*/}
-                    {/*        <Avatar alt={user.username}*/}
-                    {/*                src={user.picture ? user.picture : 'https://xsgames.co/randomusers/avatar.php?g=female'}/>*/}
-                    {/*    )*/}
-                    {/*    : (*/}
-                    {/*        <ListItemButton onClick={() => navigate('/login')}>*/}
-                    {/*            <LoginIcon/>&nbsp;*/}
-                    {/*            <Typography>Login</Typography>*/}
-                    {/*        </ListItemButton>*/}
-                    {/*    )*/}
-                    {/*}*/}
+                    {isUserLoggedIn && user
+                        ? (
+                            <Box>
+                                <Avatar alt={user.username}
+                                        src={user.picture ? user.picture : 'https://xsgames.co/randomusers/avatar.php?g=female'}
+                                        sx={{ml:1,mb:1}}
+                                        onClick={() => setOpen(!open)}/>
+                                <Collapse in={open} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        <ListItemButton onClick={() => authState.setIsUSerLoggedIn(false)}>
+                                            <LogoutIcon/>&nbsp;
+                                            <Typography>Logout</Typography>
+                                        </ListItemButton>
+                                    </List>
+                                </Collapse>
+                            </Box>
+                        )
+                        : (
+                            <ListItemButton onClick={() => navigate('/login')}>
+                                <LoginIcon/>&nbsp;
+                                <Typography>Login</Typography>
+                            </ListItemButton>
+                        )
+                    }
                     <Divider sx={{marginY: 2}}/>
                     <Typography sx={{mb: 2, ml: 2, textDecoration: 'underline'}}>Categories</Typography>
                     <ListItemButton onClick={() => navigate('/category/knowledge')}>
